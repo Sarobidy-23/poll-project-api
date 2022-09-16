@@ -1,0 +1,518 @@
+openapi: 3.0.1
+info:
+  title: STD21011 Poll project
+  description: 'API specification for poll project'
+  version: 1.0.0
+servers:
+ - url: https://STD21011.com
+tags: 
+ - name: Users
+
+ - name: Polls
+
+ - name: PollQuestions
+
+ - name: PollResponses
+
+paths:
+ /users:
+    get:
+      tags:
+        - "Users"
+      operationId: getUsers
+      summary: Get all users
+      description: Get all users with details
+      responses:
+        200:
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Users'
+        400:
+          description: bad request
+    post:
+      tags:
+        - "Users"
+      summary: Create new user
+      description: create new user
+      requestBody:
+         content:
+          'application/json':
+            schema:
+              type: object
+              properties:
+                  username: 
+                    description: Create user with exact information
+                    type: string
+                    example: hei.sarobidy
+                  email:
+                    description: Create user with exact information
+                    type: string
+                    format: email
+                    example: hei.sarobidy@gmail.com
+              
+      responses :
+        200 : 
+          description : User created succesfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Users'
+        400 : 
+          description : Bad request
+
+ /users/{owner}:
+    delete :
+      tags :
+        - Users
+      summary : Delete a user
+      description : Delete a user by email
+      parameters :
+      - name : owner
+        in : path
+        schema :
+          type : string
+          format: email
+          example: hei.sarobidy@gmail.com
+        required: true
+      responses :
+        200 : 
+          description : Delete succesfully
+        400 : 
+          description : Bad request
+
+ /polls:
+    get:
+      tags:
+        - "Polls"
+      operationId: get all polls
+      summary:  get all polls
+      responses:
+        200:
+          description: list of poll with details
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Polls'
+        400: 
+          description: bad request
+
+    post: 
+      tags:
+        - "Polls"
+      operationId: create poll
+      summary : Create new poll
+      description: Create new poll
+      requestBody:
+        description: Poll to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePoll'
+        required: true
+      responses:
+        200:
+          description: List of students
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Polls'
+        400:
+          description: Bad request
+
+    patch:
+      tags:
+        - "Polls"
+      summary: Modify information in a poll
+      description: |
+        Possible changes on:
+        * title: change
+      
+      requestBody:
+        description: Modify information in a poll
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/Polls'
+            examples:
+              changeTitle:
+                summary: change title of a poll
+                value:
+                  - id: 2
+                    title: Nouveau question
+                    owner: hei.sarobidy@gmail.com   
+      responses:
+        200:
+          description: information modified
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Polls'
+        400:
+          description: bad request
+
+    delete :
+      tags :
+        - "Polls"
+      summary : Delete a poll
+      description : Delete a poll by title
+      parameters :
+      - name : title
+        in : query
+        schema :
+          type : string
+          example: Formulaire d'évaluation
+        required: true
+      responses :
+        200 : 
+          description : Delete succesfully
+        400 : 
+          description : Bad request
+
+ /polls/{owner}:
+    get:
+      tags:
+        - "Polls"
+      summary: get all polls by his owner
+      parameters:
+        - name: owner
+          in: path
+          schema:
+            type: string
+            format: email
+            example: hei.sarobidy
+          required: true
+      responses:
+        200: 
+          description: list of poll of a owner
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Polls'
+
+ /question:
+    get:
+      tags:
+        - "PollQuestions"
+      summary: get all questions in a poll
+      parameters:
+        - name: poll_name
+          in: query
+          schema:
+            type: string
+            example: Formulaire d'évaluation
+          required: true
+        - name: owner
+          in: query
+          schema:
+            type: string
+            format: email
+            example: hei.sarobidy@gmail.com
+          required: true
+      responses:
+        200:
+          description: list of question in a poll by order growing
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PollQuestion'
+        400:
+          description: bad request
+
+    post:
+      tags:
+        - "PollQuestions"
+      summary: create new question
+      description: Create new question
+      requestBody:
+        description: PollQuestion to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePollQuestion'
+        required: true
+      responses:
+        200:
+          description: List of students
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PollQuestion'
+        400:
+          description: Bad request
+
+    patch:
+      tags:
+        - "PollQuestions"
+      summary: Modify question informations
+      description: |
+        Possible changes on:
+        * title: change
+        * type: change
+        * possibleResponse: change
+        * required: change hour
+      
+      requestBody:
+        description: Question information to Modify
+        content:
+          application/json:
+            schema:
+              items:
+                $ref: '#/components/schemas/PollQuestion'
+            examples:
+              changeTitle:
+                summary: change title of question
+                value:
+                  - id: 2
+                    poll_owner: Formulaire d'evaluation
+                    title: Nouveau question
+                    owner: hei.sarobidy@gmail.com
+              type:
+                summary: change type of question
+                value:
+                  - id: 1
+                    poll_owner: Formulaire d'evaluation
+                    type: RadioButton
+                    owner: hei.sarobidy@gmail.com
+              possibleResponse:
+                summary: change possible response in question
+                value:
+                  - id: 2
+                    poll_owner: Formulaire d'evaluation
+                    possibleResponse: ['oui','non','autre']
+                    owner: hei.sarobidy@gmail.com
+              required:
+                summary: change obligation of response
+                value:
+                  - id: 2
+                    poll_owner: Formulaire d'evaluation
+                    required: false
+                    owner: hei.sarobidy@gmail.com
+      responses:
+        200:
+          description: Question was modified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PollQuestion'
+        400:
+          description: bad request
+
+
+    delete:
+      tags:
+        - "PollQuestions"
+      summary: Delete question
+      description: Delete a question in a poll
+      parameters:
+        - name: poll_owner
+          in: query
+          schema:
+            type: string
+            format: int64
+            example: Formulaire d'evaluation
+          required: true
+        - name: owner
+          in: query
+          schema:
+            type: string
+            format: email
+            example: hei.sarobidy@gmail.com
+          required: true
+      responses:
+        200:
+          description: question deleted
+        400: 
+          description: bad request
+
+      
+
+ /response:
+    get:
+      tags:
+        - "PollResponses"
+      summary: all reponses of a poll
+      description: all responses of a poll
+      parameters:
+        - name: poll_owner
+          in: query
+          schema:
+            type: string
+            example: Formulaire d'évaluation
+          required: true
+        - name: owner
+          in: query
+          schema:
+            type: string
+            format: email
+            example: hei.sarobidy@gmail.comtrue
+          required: true
+      responses:
+        200:
+          description: list of the responses of a poll
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/PollResponse'
+        400:
+          description: bad request
+
+    delete:
+      tags:
+        - "PollResponses"
+      summary: delete all response of a poll
+      description: delete all response of a poll
+      parameters:
+        - name: poll_owner
+          in: query
+          schema:
+            type: string
+            example: Formulaire d'évaluation
+          required: true
+        - name: owner
+          in: query
+          schema: 
+            type: string
+            format: email
+            example: hei.sarobidy@gmail.com
+          required: true
+      responses:
+        200: 
+          description: reponses deleted
+        400: 
+          description: bad request
+
+
+components:
+  schemas:
+    Users:
+      type: object
+      properties:
+        id_user:
+          type: string
+          format: uuid
+        username:
+          type: string
+          example: hei.sarobidy
+        email:
+          type: string
+          format: email
+          example: hei.sarobidy@gmail.com
+
+    Polls:
+      type: object
+      properties:
+        idPoll:
+          type: integer
+          format: int64
+        title:
+          type: string
+          example: Formulaire d'évaluation
+        creationDatetime:
+          type: string
+          format: date
+        idOwner:
+          type: integer
+          format: int64
+        users: 
+          type: array
+          $ref: '#/components/schemas/Users'
+
+    CreatePoll:
+      type: object
+      properties:
+        title: 
+          type: string
+        idOwner:
+          type: integer
+          format: int64
+
+    PollQuestion:
+      type: object
+      properties:
+        idquestion:
+          type: integer
+          format: int64
+        title:
+          type: string
+          example: Quelle est votre langage favoris
+        type:
+          enum:
+            - 'Checkbox'
+            - 'RadioButton'
+            - 'Text'
+        possible_response:
+          type: array
+          items:
+            type: string
+          example: ['Javascript','Shell','Java']
+        order_in_Poll:
+          type: integer
+          format: int64e
+          example: 1
+        required: 
+          type: boolean
+        creation_datetime:
+          type: string
+          format: date
+        idPoll:
+          type: integer
+          format: int64
+
+    CreatePollQuestion:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Quelle est votre langage favoris
+        type: 
+         enum:
+            - 'Checkbox'
+            - 'RadioButton'
+            - 'Text'
+        order_in_poll:
+          type: integer
+          format: int64
+          example: 1
+        required: 
+          type: boolean
+        idPoll:
+          type: integer
+          format: int64
+
+    PollResponse:
+      type: object
+      properties:
+        idResponse: 
+          type: integer
+          format: int64
+        question: 
+          type: string
+        chooseResponse:
+          type: array
+          items: 
+            type: string
+          example: ['Javascript','EL1P3','Mr...']
+        idPoll:
+          type: array
+          items:
+            $ref: '#/components/schemas/Polls'
+        idOwner:
+          type: integer
+          format: int64
+        

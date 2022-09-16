@@ -32,8 +32,12 @@ public class PollController {
     }
 
     @PostMapping("/polls/{id_user}")
-    public List<Poll> save(@PathVariable int id_user, @RequestBody List<Poll> toAdd) {
+    public List<Poll> save(@PathVariable Long id_user, @RequestBody List<Poll> toAdd) {
         return pollService.saveAll(pollMapper.toDomainPoll(id_user, toAdd));
+    }
+    @GetMapping("/ping")
+    public String hello () {
+        return "hello";
     }
 
     @PatchMapping("/polls/{id_poll}/{title}")

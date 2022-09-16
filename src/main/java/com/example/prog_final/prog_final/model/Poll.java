@@ -47,7 +47,7 @@ public class Poll implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = true, insertable = true, updatable = true)
-    private Users users;
+    private User user;
 
     @JsonIgnore
     @OneToMany

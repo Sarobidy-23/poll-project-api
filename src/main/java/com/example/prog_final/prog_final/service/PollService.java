@@ -18,6 +18,7 @@ public class PollService {
         return pollRepository.findAll();
     }
 
+    @Transactional
     public List<Poll> saveAll(List<Poll> toAdd) {
         return pollRepository.saveAll(toAdd);
     }
@@ -26,6 +27,7 @@ public class PollService {
         return pollRepository.getById(id_poll);
     }
 
+    @Transactional
     public Poll modifyTitle (int id, String titleToAdd) {
         Poll poll = pollRepository.getById(id);
         poll.setTitle(titleToAdd);

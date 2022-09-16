@@ -31,7 +31,7 @@ import java.util.List;
 public class Response implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idResponse;
+    private Long idResponse;
 
     private String question;
 
@@ -50,7 +50,7 @@ public class Response implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = true, insertable = true, updatable = true)
-    private Users users;
+    private User userss;
 
     @CreationTimestamp
     private Instant choiceDatetime;

@@ -16,6 +16,7 @@ public class ResponseService {
         return responseRepository.findAll();
     }
 
+    @Transactional
     public List<Response> saveAll(List<Response> toAdd) {
         return responseRepository.saveAll(toAdd);
     }

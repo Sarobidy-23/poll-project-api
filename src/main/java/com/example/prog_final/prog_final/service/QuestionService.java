@@ -17,6 +17,7 @@ public class QuestionService {
         return questionRepository.findAll();
     }
 
+    @Transactional
     public List<Question> saveAll(List<Question> toAdd) {
         return questionRepository.saveAll(toAdd);
     }
