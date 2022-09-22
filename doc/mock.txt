@@ -1,0 +1,32 @@
+post: /user
+get: /user/sarobidy
+{
+    "username": "sarobidy",
+    "email": "hei.sarobidy@gmail.com",
+    "password":"sarobidy"
+}
+
+post: /polls/1
+[{
+    "title": "Evaluation",
+    "idOwner": 1
+}]
+
+post: /questions/poll/1
+[{
+    "title": "Quelle langage aimez vous le plus?",
+    "type": "CHECKBOX",
+    "possible_response": ["JAVA","JS","PHP"],
+    "order_in_poll": 1,
+    "required": true,
+    "idPoll": 1
+}]
+
+post: /responses/poll/1/owner/1
+[{
+    "question": "Quelle langage aimez vous le plus?",
+    "chooseResponse": ["JS"],
+    "idPoll": 1,
+    "idOwner": 1,
+    "choiceDatetime": "2021-10-08T08:27:24.00Z"
+}]
