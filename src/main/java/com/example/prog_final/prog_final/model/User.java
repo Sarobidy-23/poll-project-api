@@ -52,6 +52,9 @@ public class User implements Serializable {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Set<Response> responses = new HashSet<>();
 
+    public User(User user) {
+    }
+
     public Long getId() {
         return id;
     }
