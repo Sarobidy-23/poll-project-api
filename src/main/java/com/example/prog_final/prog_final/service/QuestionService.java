@@ -24,7 +24,7 @@ public class QuestionService {
 
     @Transactional
     public void deleteByPoll(int id_poll) {
-        List<Question> toDelete = questionRepository.findByIdPoll(id_poll);
+        List<Question> toDelete = questionRepository.findById(id_poll);
         questionRepository.deleteAll(toDelete);
         responseService.deleteByPoll(id_poll);
     }

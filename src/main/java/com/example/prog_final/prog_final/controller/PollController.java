@@ -1,6 +1,8 @@
 package com.example.prog_final.prog_final.controller;
 
 import com.example.prog_final.prog_final.controller.mapper.PollMapper;
+import com.example.prog_final.prog_final.controller.response.CreatePollResponse;
+import com.example.prog_final.prog_final.controller.response.PollResponse;
 import com.example.prog_final.prog_final.model.Poll;
 import com.example.prog_final.prog_final.service.PollService;
 import lombok.AllArgsConstructor;
@@ -19,11 +21,11 @@ import java.util.List;
 @AllArgsConstructor
 public class PollController {
     private final PollService pollService;
-    private final PollMapper pollMapper;
+    private final PollMapper mapper;
 
     @GetMapping("/polls")
-    public List<Poll> getAll() {
-        return pollService.getAll();
+    public List<PollResponse> getAll() {
+        return pollService.getAll().stream().map(mapper::toRest).toList();
     }
 
     @GetMapping("/polls/{id_user}")
@@ -31,9 +33,11 @@ public class PollController {
         return pollService.getAllByOwner(id_user);
     }
 
-    @PostMapping("/polls/{id_user}")
-    public List<Poll> save(@PathVariable Long id_user, @RequestBody List<Poll> toAdd) {
-        return pollService.saveAll(pollMapper.toDomainPoll(id_user, toAdd));
+    @PostMapping("/polls")
+    public List<PollResponse> save(@RequestBody List<CreatePollResponse> toAdd) {
+        List<Poll> toCreate = toAdd.stream().map(mapper::toDomain).toList();
+
+        return pollService.saveAll(toCreate).stream().map(mapper::toRest).toList();
     }
     @GetMapping("/ping")
     public String hello () {

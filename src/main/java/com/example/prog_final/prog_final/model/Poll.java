@@ -21,8 +21,8 @@ import javax.persistence.Table;
 import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -36,28 +36,28 @@ import java.util.Set;
 public class Poll implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idPoll;
+    private int id;
 
     private String title;
 
     @CreationTimestamp
     private Instant creationDatetime;
 
-    private int idOwner;
+    private Long userid;
 
     @ManyToOne
-    @JoinColumn(name = "id_user", nullable = true, insertable = true, updatable = true)
+    @JoinColumn(name = "userid", nullable = true, insertable = false, updatable = false)
     private User user;
 
     @JsonIgnore
     @OneToMany
-    @JoinColumn(name ="idPoll")
+    @JoinColumn(name ="id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private Set<Question> questions = new HashSet<>();
+    private List<Question> questions = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany
-    @JoinColumn(name ="idPoll")
+    @JoinColumn(name ="id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private Set<Response> responses = new HashSet<>();
+    private List<Response> responses = new ArrayList<>();
 }

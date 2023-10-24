@@ -18,42 +18,42 @@ public class QuestionMapper {
     private final PollService pollService;
     public Question toRest(Question question) {
         var restQuestion = new Question();
-        restQuestion.setIdquestion(question.getIdquestion());
+        restQuestion.setId(question.getId());
         restQuestion.setTitle(question.getTitle());
         restQuestion.setType(question.getType());
         restQuestion.setPossible_response(question.getPossible_response());
         restQuestion.setOrder_in_poll(question.getOrder_in_poll());
         restQuestion.setRequired(question.isRequired());
         restQuestion.setCreation_datetime(question.getCreation_datetime());
-        restQuestion.setIdPoll(question.getIdPoll());
+        restQuestion.setId(question.getId());
 
         return restQuestion;
     }
 
     public Question toDomain(Question restQuestion) {
         return Question.builder()
-                .idquestion(restQuestion.getIdquestion())
+                .id(restQuestion.getId())
                 .title(restQuestion.getTitle())
                 .type(restQuestion.getType())
                 .possible_response(restQuestion.getPossible_response())
                 .order_in_poll(restQuestion.getOrder_in_poll())
                 .required(restQuestion.isRequired())
                 .creation_datetime(restQuestion.getCreation_datetime())
-                .idPoll(restQuestion.getIdPoll())
+                .id(restQuestion.getId())
                 .build();
     }
 
     private Question toDomainQuestion(
             Poll associatedPoll, Question createQuestion) {
         return Question.builder()
-                .idquestion(createQuestion.getIdquestion())
+                .id(createQuestion.getId())
                 .title(createQuestion.getTitle())
                 .type(createQuestion.getType())
                 .possible_response(createQuestion.getPossible_response())
                 .order_in_poll(createQuestion.getOrder_in_poll())
                 .required(createQuestion.isRequired())
                 .creation_datetime(createQuestion.getCreation_datetime())
-                .idPoll(createQuestion.getIdPoll())
+                .id(createQuestion.getId())
                 .poll(associatedPoll)
                 .build();
     }

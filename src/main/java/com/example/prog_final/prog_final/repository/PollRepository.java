@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface PollRepository extends JpaRepository<Poll, Integer> {
-   List<Poll> findByIdOwner(int id_user);
+   List<Poll> findAllByUserid(int id_user);
 }

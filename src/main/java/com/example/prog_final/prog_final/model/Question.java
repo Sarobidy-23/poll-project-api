@@ -32,7 +32,7 @@ import java.util.List;
 public class Question implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idquestion;
+    private int id;
 
     private String title;
 
@@ -48,8 +48,6 @@ public class Question implements Serializable {
 
     @CreationTimestamp
     private Instant creation_datetime;
-
-    private int idPoll;
 
     @ManyToOne
     @JoinColumn(name = "idPolls", nullable = true, insertable = true, updatable = true)
